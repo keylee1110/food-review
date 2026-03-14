@@ -1,0 +1,30 @@
+
+> test-app@0.1.0 build
+> next build
+
+Γû▓ Next.js 16.1.6 (Turbopack)
+
+  Creating an optimized production build ...
+Γ£ô Compiled successfully in 2.4s
+  Running TypeScript ...
+  Collecting page data using 11 workers ...
+Error: Failed to collect configuration for /
+    at ignore-listed frames {
+  [cause]: Error: `projectId` can only contain only a-z, 0-9 and dashes
+      at <unknown> (D:\Khoa Lee\IT\small project\food-review\.next\server\chunks\ssr\[root-of-the-server]__3c4ff60c._.js:10:10200)
+      at aF (D:\Khoa Lee\IT\small project\food-review\.next\server\chunks\ssr\[root-of-the-server]__3c4ff60c._.js:10:10264)
+      at bT.config (D:\Khoa Lee\IT\small project\food-review\.next\server\chunks\ssr\[root-of-the-server]__3c4ff60c._.js:13:30339)
+      at new bT (D:\Khoa Lee\IT\small project\food-review\.next\server\chunks\ssr\[root-of-the-server]__3c4ff60c._.js:13:29706)
+      at createClient (D:\Khoa Lee\IT\small project\food-review\.next\server\chunks\ssr\[root-of-the-server]__3c4ff60c._.js:13:32398)
+      at module evaluation (D:\Khoa Lee\IT\small project\food-review\.next\server\chunks\ssr\[root-of-the-server]__3c4ff60c._.js:13:32550)
+      at instantiateModule (D:\Khoa Lee\IT\small project\food-review\.next\server\chunks\ssr\[turbopack]_runtime.js:740:9)
+      at getOrInstantiateModuleFromParent (D:\Khoa Lee\IT\small project\food-review\.next\server\chunks\ssr\[turbopack]_runtime.js:763:12)
+      at Context.esmImport [as i] (D:\Khoa Lee\IT\small project\food-review\.next\server\chunks\ssr\[turbopack]_runtime.js:228:20)
+      at module evaluation (D:\Khoa Lee\IT\small project\food-review\.next\server\chunks\ssr\_b1c71f8f._.js:1:60)
+}
+
+> Build error occurred
+Error: Failed to collect page data for /
+    at ignore-listed frames {
+  type: 'Error'
+}
