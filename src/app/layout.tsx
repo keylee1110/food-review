@@ -6,8 +6,11 @@ import CustomCursor from "@/components/CustomCursor";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Food Review | Khoa Lee",
+  title: "Ghet.review | Food & Vibes",
   description: "Nền tảng đánh giá ẩm thực tối giản",
+  icons: {
+    icon: "/logo.png",
+  },
 };
 
 export default function RootLayout({

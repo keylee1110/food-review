@@ -25,12 +25,14 @@ export default function ReviewCard({ review, onClick }: ReviewCardProps) {
     <motion.div
       layoutId={`card-container-${review._id}`}
       onClick={() => onClick(review)}
-      className="group relative cursor-pointer overflow-hidden rounded-2xl bg-[#111] p-3 transition-transform hover:scale-[1.02] active:scale-[0.98]"
-      whileHover={{ y: -5 }}
+      className="group relative cursor-pointer overflow-hidden rounded-2xl bg-[#111] p-3"
+      whileHover={{ y: -5, scale: 1.02 }}
+      whileTap={{ scale: 0.98 }}
+      transition={{ type: "spring", damping: 25, stiffness: 300 }}
     >
       {/* Aspect ratio container for image */}
       <div className="relative aspect-[4/5] w-full overflow-hidden rounded-xl bg-neutral-900">
-        <motion.div layoutId={`card-image-${review._id}`} className="h-full w-full">
+        <div className="h-full w-full">
           <Image
             src={review.thumbnailUrl || '/placeholder.jpg'}
             alt={review.title}
@@ -38,7 +40,7 @@ export default function ReviewCard({ review, onClick }: ReviewCardProps) {
             className="object-cover transition-transform duration-700 group-hover:scale-105"
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
           />
-        </motion.div>
+        </div>
         
         {/* Gradient Overlay for text legibility */}
         <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-black/80 to-transparent" />
@@ -51,12 +53,9 @@ export default function ReviewCard({ review, onClick }: ReviewCardProps) {
       </div>
 
       <div className="mt-4 px-1 pb-1">
-        <motion.h3 
-          layoutId={`card-title-${review._id}`}
-          className="text-lg font-bold tracking-tight text-white line-clamp-1"
-        >
+        <h3 className="text-lg font-bold tracking-tight text-white line-clamp-2">
           {review.title}
-        </motion.h3>
+        </h3>
         <div className="mt-1 flex items-center text-sm text-neutral-400">
           <MapPin className="mr-1 h-3.5 w-3.5 shrink-0" />
           <span className="line-clamp-1">{review.location}</span>

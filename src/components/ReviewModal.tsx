@@ -15,25 +15,26 @@ export default function ReviewModal({ review, onClose }: ReviewModalProps) {
   return (
     <>
       {/* Backdrop */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            onClick={onClose}
-            className="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm"
-          />
-
-      {/* Modal / Bottom Sheet */}
       <motion.div
-        initial={{ y: "100%", opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        exit={{ y: "100%", opacity: 0 }}
-        transition={{ type: "spring", damping: 25, stiffness: 300 }}
-        className="fixed inset-x-0 bottom-0 z-50 flex max-h-[90vh] flex-col overflow-hidden rounded-t-3xl bg-[#111] sm:inset-auto sm:top-1/2 sm:left-1/2 sm:w-full sm:max-w-md sm:-translate-x-1/2 sm:-translate-y-1/2 sm:rounded-2xl"
-      >
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        transition={{ duration: 0.2 }}
+        onClick={onClose}
+        className="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm"
+      />
+
+      {/* Container to handle centering safely without translate-x/y on the animated element */}
+      <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center pointer-events-none sm:p-4">
+        {/* Modal / Bottom Sheet */}
+        <motion.div
+          layoutId={`card-container-${review._id}`}
+          className="pointer-events-auto flex w-full max-h-[90vh] flex-col overflow-hidden rounded-t-3xl bg-[#111] sm:max-w-md sm:rounded-2xl relative"
+          transition={{ type: "spring", damping: 25, stiffness: 300 }}
+        >
             {/* Header/Image Area */}
             <div className="relative aspect-video w-full shrink-0">
-              <motion.div layoutId={`card-image-${review._id}`} className="h-full w-full">
+              <div className="h-full w-full">
             <Image
               src={review.thumbnailUrl || '/placeholder.jpg'}
               alt={review.title}
@@ -41,7 +42,7 @@ export default function ReviewModal({ review, onClose }: ReviewModalProps) {
               priority
               className="object-cover"
             />
-              </motion.div>
+              </div>
               
               {/* Close Button */}
               <button
@@ -55,12 +56,9 @@ export default function ReviewModal({ review, onClose }: ReviewModalProps) {
             {/* Scrollable Content */}
             <div className="flex-1 overflow-y-auto p-6 scrollbar-hide">
               <div className="flex items-start justify-between gap-4">
-                <motion.h2 
-                  layoutId={`card-title-${review._id}`}
-                  className="text-2xl font-bold text-white leading-tight"
-                >
+                <h2 className="text-2xl font-bold text-white leading-tight">
                   {review.title}
-                </motion.h2>
+                </h2>
                 <div className="flex items-center gap-1 shrink-0 rounded-full bg-neutral-800 px-3 py-1.5 font-medium">
                   <Star className="h-4 w-4 fill-white text-white" />
                   <span>{review.rating.toFixed(1)}</span>
@@ -117,6 +115,7 @@ export default function ReviewModal({ review, onClose }: ReviewModalProps) {
               </a>
             </div>
       </motion.div>
+      </div>
     </>
   );
 }
