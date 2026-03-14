@@ -9,6 +9,7 @@ export interface ReviewProps {
   rating: number;
   thumbnailUrl: string;
   tags: string[];
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   content?: any[];
   googleMapsUrl?: string;
   gallery?: string[];
