@@ -11,6 +11,14 @@ const nextConfig: NextConfig = {
         protocol: 'https',
         hostname: 'cdn.sanity.io',
       },
+      {
+        protocol: 'https',
+        hostname: 'qr.sepay.vn',
+      },
+      {
+        protocol: 'https',
+        hostname: 'placehold.co',
+      },
     ],
   },
 };

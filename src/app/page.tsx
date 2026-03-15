@@ -59,5 +59,9 @@ export default async function Home() {
     }
   ];
 
-  return <ReviewFeed initialReviews={displayReviews} />;
+  return (
+    <main className="max-w-md mx-auto min-h-screen px-4 pb-20">
+      <ReviewFeed initialReviews={displayReviews} />
+    </main>
+  );
 }

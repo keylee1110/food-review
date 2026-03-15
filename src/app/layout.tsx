@@ -21,16 +21,27 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${inter.className} antialiased bg-black text-white selection:bg-white selection:text-black`}>
+      <body 
+        className={`${inter.className} antialiased bg-black text-white selection:bg-white selection:text-black`}
+        suppressHydrationWarning
+      >
         <CustomCursor />
-        {/* Minimalist Header */}
-        <header className="w-full flex justify-center py-8">
-          <h1 className="text-2xl font-bold tracking-tight uppercase">ghet.review</h1>
+        <header className="w-full flex justify-between items-center py-6 px-6 max-w-6xl mx-auto">
+          <a href="/" className="text-2xl font-bold tracking-tight uppercase hover:text-pink-400 transition-colors">
+            ghet.review
+          </a>
+          
+          {/* TẠM ẨN: Nút dắt link Hidden Gems khi deploy lên Prod để test
+          <a 
+            href="/hidden-gems" 
+            className="text-sm font-medium text-pink-500 bg-pink-500/10 px-4 py-2 rounded-full hover:bg-pink-500 hover:text-white transition-all flex items-center gap-2"
+          >
+            💎 Hidden Gems
+          </a> 
+          */}
         </header>
 
-        <main className="max-w-md mx-auto min-h-screen px-4 pb-20">
-          {children}
-        </main>
+        {children}
         <Analytics />
       </body>
     </html>
