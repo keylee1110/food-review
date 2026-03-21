@@ -40,26 +40,30 @@ export default async function HiddenGemsPage() {
     <main className="min-h-screen bg-black text-white pt-8 md:pt-12 pb-16 px-4">
       {/* Hero Section */}
       <div className="max-w-4xl mx-auto text-center mb-16">
-        <h1 className="text-4xl md:text-6xl font-black mb-6 tracking-tight bg-gradient-to-r from-pink-500 to-orange-400 bg-clip-text text-transparent">
-          Bản Đồ Hidden Gems
+        <h1 className="text-4xl md:text-6xl font-black mb-6 tracking-tight bg-gradient-to-r from-pink-500 to-orange-400 bg-clip-text text-transparent leading-tight">
+          Bản Đồ Hidden Gems <br className="hidden md:block" /> cho Team "dị ứng" Seeding 🚫
         </h1>
-        <p className="text-lg md:text-xl text-neutral-400 max-w-2xl mx-auto mb-8">
-          Khám phá những góc khuất ẩm thực cực chất qua lăng kính người địa phương. 
-          Không chỉ là danh sách Google Maps, mà còn là review độc quyền cực kỳ chi tiết.
-        </p>
+        <div className="text-lg md:text-xl text-neutral-400 max-w-3xl mx-auto mb-10 space-y-4">
+          <p>
+            Lỡ cả đời cứ hễ buồn là đi ăn thì sao? Thì ít nhất cũng phải ăn được quán ngon, chứ ăn trúng quán seeding là buồn x100 lần đó yêu!
+          </p>
+          <p>
+            Ở đây tụi mình chỉ có những góc núp lùm mà dân bản địa thà giấu làm của riêng chứ không nỡ share. Review độc quyền, có sao nói vậy, đảm bảo không làm bạn thất vọng (trừ khi bạn không đi).
+          </p>
+        </div>
         
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-6 text-sm md:text-base text-neutral-300 font-medium">
-          <div className="flex items-center gap-2">
-            <div className="bg-pink-500/10 p-2 rounded-full text-pink-500">
-              <MapPin size={20} />
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-8 text-sm md:text-base text-neutral-300 font-medium">
+          <div className="flex items-center gap-3">
+            <div className="bg-pink-500/10 p-2.5 rounded-full text-pink-500">
+              <MapPin size={22} />
             </div>
-            Lưu thẳng vào Điện Thoại
+            <span>Bấm lưu nếu bạn cũng sợ seeding như sợ người yêu cũ.</span>
           </div>
-          <div className="flex items-center gap-2">
-            <div className="bg-orange-500/10 p-2 rounded-full text-orange-500">
-              <LockKeyhole size={20} />
+          <div className="flex items-center gap-3">
+            <div className="bg-orange-500/10 p-2.5 rounded-full text-orange-500">
+              <LockKeyhole size={22} />
             </div>
-            Review Nội Bộ Độc Quyền
+            <span>Nội dung "nội bộ": Những góc khuất mà tụi mình thà giữ kín còn hơn bị "over-rated"</span>
           </div>
         </div>
       </div>

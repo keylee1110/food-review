@@ -65,6 +65,38 @@ export async function POST(request: Request) {
         return NextResponse.json({ error: 'Database update failed' }, { status: 500 })
       }
 
+      // 6. Gửi Email qua Resend nếu order có email
+      if (order.email && process.env.RESEND_API_KEY) {
+        try {
+          const { Resend } = await import('resend');
+          const { HiddenGemEmail } = await import('@/components/emails/HiddenGemEmail');
+          const { client } = await import('@/sanity/lib/client');
+          
+          const resend = new Resend(process.env.RESEND_API_KEY);
+          
+          // Lấy MapUrl và Title từ Sanity
+          const mapListQuery = `*[_type == "mapList" && slug.current == $slug][0]{ title, mapUrl }`;
+          const mapList = await client.fetch(mapListQuery, { slug: order.map_slug });
+
+          if (mapList && mapList.mapUrl) {
+            await resend.emails.send({
+              from: 'Ghet Review <onboarding@resend.dev>', // Update with a verified domain later
+              to: [order.email],
+              subject: `Kho báu của bạn: ${mapList.title}`,
+              react: HiddenGemEmail({
+                title: mapList.title,
+                mapUrl: mapList.mapUrl,
+                orderCode: order.order_code,
+              }) as React.ReactElement,
+            });
+            console.log('Email sent successfully to', order.email);
+          }
+        } catch (emailErr) {
+          console.error('Failed to send email:', emailErr);
+          // Không block luồng webhook vì gửi mail lỗi
+        }
+      }
+
       // TODO: Increment purchaseCount on Sanity using Sanity Write Token
       // Lát nữa có thể thêm hàm gọi mutation Sanity ở đây.
 

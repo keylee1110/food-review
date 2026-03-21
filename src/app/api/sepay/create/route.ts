@@ -5,10 +5,14 @@ import { supabaseAdmin } from '@/lib/supabase'
 export async function POST(request: Request) {
   try {
     const body = await request.json()
-    const { slug, promoCode } = body
+    const { slug, promoCode, email } = body
 
     if (!slug) {
       return NextResponse.json({ error: 'Map slug is required' }, { status: 400 })
+    }
+
+    if (!email) {
+      return NextResponse.json({ error: 'Email is required' }, { status: 400 })
     }
 
     // 1. Lấy thông tin giá của Map List từ Sanity
@@ -49,6 +53,7 @@ export async function POST(request: Request) {
           map_slug: slug,
           amount: finalAmount,
           promo_code: promoCode?.toUpperCase() || null,
+          email: email,
           status: 'PENDING',
         },
       ])

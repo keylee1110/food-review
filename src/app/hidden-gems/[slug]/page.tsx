@@ -35,6 +35,14 @@ export default async function HiddenGemsDetailPage({
 
   return (
     <main className="min-h-screen bg-black text-white pt-8 md:pt-12 pb-16 px-4">
+      <div className="max-w-5xl mx-auto mb-6">
+        <a 
+          href="/hidden-gems" 
+          className="inline-flex items-center gap-2 text-neutral-400 hover:text-white transition-colors text-sm font-medium"
+        >
+          &larr; Quay lại danh sách
+        </a>
+      </div>
       <div className="max-w-5xl mx-auto flex flex-col md:flex-row gap-6 md:gap-12">
         
         {/* Left Col: Info */}

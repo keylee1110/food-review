@@ -5,6 +5,7 @@ CREATE TABLE public.orders (
     map_slug text NOT NULL,
     amount numeric NOT NULL,
     promo_code text,
+    email text, -- Added for sending email
     status text NOT NULL DEFAULT 'PENDING',
     created_at timestamp with time zone NOT NULL DEFAULT now()
 );

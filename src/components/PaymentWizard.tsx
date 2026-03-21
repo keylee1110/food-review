@@ -14,18 +14,24 @@ interface PaymentWizardProps {
 export default function PaymentWizard({ slug, basePrice }: PaymentWizardProps) {
   const router = useRouter();
   const [promoCode, setPromoCode] = useState('');
+  const [email, setEmail] = useState('');
   const [isProcessing, setIsProcessing] = useState(false);
   const [order, setOrder] = useState<any>(null);
   const [paymentStatus, setPaymentStatus] = useState<'IDLE' | 'PENDING' | 'PAID'>('IDLE');
   
   // Create order
   const handleCheckout = async () => {
+    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      alert('Vui lòng nhập định dạng email hợp lệ');
+      return;
+    }
+
     setIsProcessing(true);
     try {
       const res = await fetch('/api/sepay/create', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ slug, promoCode })
+        body: JSON.stringify({ slug, promoCode, email })
       });
       const data = await res.json();
       
@@ -165,6 +171,18 @@ export default function PaymentWizard({ slug, basePrice }: PaymentWizardProps) {
           <span>{basePrice.toLocaleString('vi-VN')}đ</span>
         </div>
         
+        <div>
+          <label className="block text-sm text-neutral-500 mb-1">Email nhận link *</label>
+          <input 
+            type="email" 
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder="vd: you@example.com"
+            required
+            className="w-full bg-black border border-white/10 rounded-lg px-4 py-2 text-white outline-none focus:border-pink-500 transition-colors"
+          />
+        </div>
+
         <div>
           <label className="block text-sm text-neutral-500 mb-1">Mã giảm giá (Nếu có)</label>
           <input 
