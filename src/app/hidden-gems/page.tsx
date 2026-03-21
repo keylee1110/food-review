@@ -52,58 +52,76 @@ export default async function HiddenGemsPage() {
           </p>
         </div>
         
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-8 text-sm md:text-base text-neutral-300 font-medium">
-          <div className="flex items-center gap-3">
-            <div className="bg-pink-500/10 p-2.5 rounded-full text-pink-500">
+        <div className="inline-flex flex-col md:flex-row items-stretch md:items-center justify-center gap-4 p-2 bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl max-w-fit mx-auto">
+          <div className="flex items-center gap-3 px-6 py-4 rounded-2xl bg-white/5 border border-white/5">
+            <div className="flex-shrink-0 bg-pink-500/20 p-2 rounded-xl text-pink-400">
               <MapPin size={22} />
             </div>
-            <span>Bấm lưu nếu bạn cũng sợ seeding như sợ người yêu cũ.</span>
+            <span className="text-sm md:text-base text-white font-semibold text-left">
+              Bấm lưu nếu bạn cũng sợ seeding như <br className="hidden lg:block" /> sợ người yêu cũ.
+            </span>
           </div>
-          <div className="flex items-center gap-3">
-            <div className="bg-orange-500/10 p-2.5 rounded-full text-orange-500">
+          
+          <div className="flex items-center gap-3 px-6 py-4 rounded-2xl bg-white/5 border border-white/5">
+            <div className="flex-shrink-0 bg-orange-500/20 p-2 rounded-xl text-orange-400">
               <LockKeyhole size={22} />
             </div>
-            <span>Nội dung "nội bộ": Những góc khuất mà tụi mình thà giữ kín còn hơn bị "over-rated"</span>
+            <span className="text-sm md:text-base text-white font-semibold text-left">
+              Nội dung "nội bộ": Những góc khuất mà tụi mình <br className="hidden lg:block" /> thà giữ kín còn hơn bị "over-rated"
+            </span>
           </div>
         </div>
       </div>
 
       {/* Grid of Map Lists */}
-      <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 px-2 md:px-0">
         {maps.map((map) => (
           <Link href={`/hidden-gems/${map.slug.current}`} key={map.slug.current}>
-            <div className="group relative rounded-3xl bg-[#111] overflow-hidden border border-white/5 hover:border-white/10 transition-colors duration-300">
-              <div className="aspect-[4/3] relative w-full overflow-hidden">
+            <div className="group relative rounded-[2rem] bg-neutral-900/50 backdrop-blur-sm overflow-hidden border border-white/5 hover:border-pink-500/30 transition-all duration-500 hover:shadow-[0_0_30px_-10px_rgba(236,72,153,0.3)]">
+              <div className="aspect-[16/10] relative w-full overflow-hidden">
                 <Image
                   src={map.thumbnailUrl || '/placeholder.jpg'}
                   alt={map.title}
                   fill
-                  className="object-cover transition-transform duration-700 group-hover:scale-105"
-                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                  className="object-cover transition-transform duration-1000 group-hover:scale-110"
+                  sizes="(max-width: 768px) 100vw, 50vw"
                 />
-                <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-black/90 to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-t from-neutral-900 via-neutral-900/20 to-transparent opacity-80" />
                 
-                {/* Price tag */}
-                <div className="absolute top-4 left-4 bg-white/10 backdrop-blur-md border border-white/10 px-3 py-1.5 rounded-full text-sm font-bold shadow-lg">
+                {/* Price tag with Premium Style */}
+                <div className="absolute top-6 left-6 bg-black/60 backdrop-blur-xl border border-white/20 px-4 py-2 rounded-2xl text-base font-black shadow-2xl text-pink-400">
                   {map.price.toLocaleString('vi-VN')}đ
+                </div>
+
+                {/* Status Badge */}
+                <div className="absolute top-6 right-6 bg-pink-500 text-white text-[10px] font-bold uppercase tracking-widest px-3 py-1.5 rounded-full shadow-lg">
+                  Limited Access
                 </div>
               </div>
               
-              <div className="p-6 relative">
-                <h3 className="text-xl font-bold mb-2 group-hover:text-pink-400 transition-colors">
+              <div className="p-8 relative">
+                <div className="flex items-center gap-2 mb-3">
+                   <div className="h-px w-8 bg-pink-500/50" />
+                   <span className="text-[10px] uppercase tracking-widest font-bold text-pink-500/80">Hidden Map</span>
+                </div>
+                
+                <h3 className="text-2xl font-black mb-3 group-hover:text-pink-400 transition-colors leading-tight">
                   {map.title}
                 </h3>
-                <p className="text-neutral-400 text-sm line-clamp-2 mb-4 leading-relaxed">
+                <p className="text-neutral-400 text-sm line-clamp-2 mb-8 leading-relaxed font-medium">
                   {map.description}
                 </p>
                 
-                <div className="flex items-center justify-between mt-auto">
-                  <div className="flex items-center gap-1.5 text-xs font-medium text-pink-500 bg-pink-500/10 px-2.5 py-1 rounded-full">
-                    <Users size={14} />
-                    <span>{map.purchaseCount} người đã mua</span>
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2 text-xs font-bold text-neutral-300 bg-white/5 px-4 py-2.5 rounded-xl border border-white/5">
+                    <Users size={16} className="text-pink-500" />
+                    <span>{map.purchaseCount}0+ lượt tải</span>
                   </div>
-                  <div className="text-sm font-bold flex items-center gap-1">
-                    Xem thử <span className="group-hover:translate-x-1 transition-transform">→</span>
+                  
+                  <div className="group/btn relative px-6 py-2.5 bg-white text-black rounded-xl font-bold text-sm overflow-hidden transition-all active:scale-95">
+                    <span className="relative z-10 flex items-center gap-2">
+                      Sở hữu ngay <span className="group-hover/btn:translate-x-1 transition-transform">→</span>
+                    </span>
                   </div>
                 </div>
               </div>

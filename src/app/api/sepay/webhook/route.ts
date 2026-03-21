@@ -66,10 +66,11 @@ export async function POST(request: Request) {
       }
 
       // 6. Gửi Email qua Resend nếu order có email
+      console.log('Email check - order.email:', order.email, '| RESEND_API_KEY exists:', !!process.env.RESEND_API_KEY)
+      
       if (order.email && process.env.RESEND_API_KEY) {
         try {
           const { Resend } = await import('resend');
-          const { HiddenGemEmail } = await import('@/components/emails/HiddenGemEmail');
           const { client } = await import('@/sanity/lib/client');
           
           const resend = new Resend(process.env.RESEND_API_KEY);
@@ -77,23 +78,40 @@ export async function POST(request: Request) {
           // Lấy MapUrl và Title từ Sanity
           const mapListQuery = `*[_type == "mapList" && slug.current == $slug][0]{ title, mapUrl }`;
           const mapList = await client.fetch(mapListQuery, { slug: order.map_slug });
+          console.log('Sanity mapList fetched:', mapList);
 
           if (mapList && mapList.mapUrl) {
-            await resend.emails.send({
-              from: 'Ghet Review <onboarding@resend.dev>', // Update with a verified domain later
-              to: [order.email],
-              subject: `Kho báu của bạn: ${mapList.title}`,
-              react: HiddenGemEmail({
-                title: mapList.title,
-                mapUrl: mapList.mapUrl,
-                orderCode: order.order_code,
-              }) as React.ReactElement,
+            const emailResult = await resend.emails.send({
+              from: 'onboarding@resend.dev',
+              to: order.email,
+              subject: `💎 Kho báu của bạn: ${mapList.title}`,
+              html: `
+                <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; background: #000; color: #fff; padding: 32px; border-radius: 12px;">
+                  <h1 style="color: #ec4899; margin-bottom: 8px;">Thanh toán thành công! 🎉</h1>
+                  <p style="color: #aaa;">Cảm ơn bạn đã mua <strong style="color: #fff;">${mapList.title}</strong>.</p>
+                  <p style="color: #aaa;">Mã đơn hàng: <strong style="color: #fff; font-family: monospace;">${order.order_code}</strong></p>
+                  
+                  <div style="margin: 32px 0; padding: 24px; background: #111; border-radius: 8px; border: 1px solid #333;">
+                    <p style="margin: 0 0 16px; font-weight: bold; color: #fff;">Đây là kho báu của bạn:</p>
+                    <a href="${mapList.mapUrl}" 
+                       style="display: inline-block; background: linear-gradient(to right, #ec4899, #f97316); color: #fff; padding: 14px 28px; text-decoration: none; border-radius: 8px; font-weight: bold;">
+                      Mở Danh Sách Trên Google Maps 🗺️
+                    </a>
+                    <p style="margin-top: 12px; font-size: 12px; color: #666; word-break: break-all;">
+                      Link: ${mapList.mapUrl}
+                    </p>
+                  </div>
+                  
+                  <p style="color: #666; font-size: 12px;">Chúc bạn có những trải nghiệm tuyệt vời — Ghet.review 🍜</p>
+                </div>
+              `,
             });
-            console.log('Email sent successfully to', order.email);
+            console.log('Resend email result:', JSON.stringify(emailResult));
+          } else {
+            console.warn('mapList not found or missing mapUrl for slug:', order.map_slug);
           }
         } catch (emailErr) {
           console.error('Failed to send email:', emailErr);
-          // Không block luồng webhook vì gửi mail lỗi
         }
       }
 
