@@ -7,6 +7,11 @@ const withPWA = withPWAInit({
 });
 
 const nextConfig: NextConfig = {
+  // Ép Next.js 16 dùng Webpack thay vì Turbopack để tương thích với next-pwa
+  // Chúng ta định nghĩa một webpack config rỗng để Next.js không ép dùng Turbopack
+  webpack: (config) => {
+    return config;
+  },
   images: {
     remotePatterns: [
       {
