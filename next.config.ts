@@ -7,8 +7,8 @@ const withPWA = withPWAInit({
 });
 
 const nextConfig: NextConfig = {
-  // Ép Next.js 16 dùng Webpack thay vì Turbopack để tương thích với next-pwa
-  // Chúng ta định nghĩa một webpack config rỗng để Next.js không ép dùng Turbopack
+  // Ở Next.js 16, việc khai báo hàm webpack rỗng sẽ tự động kích hoạt Webpack engine 
+  // thay vì Turbopack, giúp tương thích hoàn toàn với các plugin như next-pwa.
   webpack: (config) => {
     return config;
   },
