@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 import CustomCursor from "@/components/CustomCursor";
+import PwaRegistrar from "@/components/PwaRegistrar";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -37,6 +38,7 @@ export default function RootLayout({
         suppressHydrationWarning
       >
         <CustomCursor />
+        <PwaRegistrar />
         <header className="w-full flex justify-between items-center py-6 px-6 max-w-6xl mx-auto">
           <a href="/" className="text-2xl font-bold tracking-tight uppercase hover:text-pink-400 transition-colors">
             ghet.review
