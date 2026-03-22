@@ -65,53 +65,69 @@ export async function POST(request: Request) {
         return NextResponse.json({ error: 'Database update failed' }, { status: 500 })
       }
 
-      // 6. Gửi Email qua Resend nếu order có email
-      console.log('Email check - order.email:', order.email, '| RESEND_API_KEY exists:', !!process.env.RESEND_API_KEY)
+      // 6. Gửi Email qua SMTP (Nodemailer) nếu order có email
+      const smtpUser = process.env.SMTP_USER;
+      const smtpPass = process.env.SMTP_PASS;
+
+      console.log('Email check - order.email:', order.email, '| SMTP_USER exists:', !!smtpUser);
       
-      if (order.email && process.env.RESEND_API_KEY) {
+      if (order.email && smtpUser && smtpPass) {
         try {
-          const { Resend } = await import('resend');
+          const nodemailer = await import('nodemailer');
           const { client } = await import('@/sanity/lib/client');
-          
-          const resend = new Resend(process.env.RESEND_API_KEY);
-          
+
+          const transporter = nodemailer.createTransport({
+            service: 'gmail',
+            auth: {
+              user: smtpUser,
+              pass: smtpPass,
+            },
+          });
+
           // Lấy MapUrl và Title từ Sanity
           const mapListQuery = `*[_type == "mapList" && slug.current == $slug][0]{ title, mapUrl }`;
           const mapList = await client.fetch(mapListQuery, { slug: order.map_slug });
-          console.log('Sanity mapList fetched:', mapList);
+          console.log('Sanity mapList fetched for email:', mapList);
 
           if (mapList && mapList.mapUrl) {
-            const emailResult = await resend.emails.send({
-              from: 'onboarding@resend.dev',
+            const info = await transporter.sendMail({
+              from: `"Ghet.review 💎" <${smtpUser}>`,
               to: order.email,
-              subject: `💎 Kho báu của bạn: ${mapList.title}`,
+              subject: `🔓 Mở khoá: ${mapList.title}`,
               html: `
-                <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; background: #000; color: #fff; padding: 32px; border-radius: 12px;">
-                  <h1 style="color: #ec4899; margin-bottom: 8px;">Thanh toán thành công! 🎉</h1>
-                  <p style="color: #aaa;">Cảm ơn bạn đã mua <strong style="color: #fff;">${mapList.title}</strong>.</p>
-                  <p style="color: #aaa;">Mã đơn hàng: <strong style="color: #fff; font-family: monospace;">${order.order_code}</strong></p>
-                  
-                  <div style="margin: 32px 0; padding: 24px; background: #111; border-radius: 8px; border: 1px solid #333;">
-                    <p style="margin: 0 0 16px; font-weight: bold; color: #fff;">Đây là kho báu của bạn:</p>
-                    <a href="${mapList.mapUrl}" 
-                       style="display: inline-block; background: linear-gradient(to right, #ec4899, #f97316); color: #fff; padding: 14px 28px; text-decoration: none; border-radius: 8px; font-weight: bold;">
-                      Mở Danh Sách Trên Google Maps 🗺️
-                    </a>
-                    <p style="margin-top: 12px; font-size: 12px; color: #666; word-break: break-all;">
-                      Link: ${mapList.mapUrl}
-                    </p>
+                <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; max-width: 600px; margin: 0 auto; background-color: #000; color: #fff; padding: 40px 20px; border-radius: 24px; border: 1px solid #222;">
+                  <div style="text-align: center; margin-bottom: 32px;">
+                    <span style="font-size: 48px;">💎</span>
+                    <h1 style="color: #fff; font-size: 24px; font-weight: 900; margin-top: 16px; letter-spacing: -0.025em;">THANH TOÁN THÀNH CÔNG!</h1>
                   </div>
-                  
-                  <p style="color: #666; font-size: 12px;">Chúc bạn có những trải nghiệm tuyệt vời — Ghet.review 🍜</p>
+
+                  <div style="background: #111; padding: 24px; border-radius: 16px; border: 1px solid #333; margin-bottom: 32px;">
+                    <p style="margin: 0 0 8px; color: #888; font-size: 14px;">Đơn hàng của bạn cho:</p>
+                    <h2 style="margin: 0 0 20px; color: #ec4899; font-size: 20px; font-weight: 800;">${mapList.title}</h2>
+                    
+                    <div style="height: 1px; background: #222; margin-bottom: 20px;"></div>
+                    
+                    <p style="margin: 0 0 24px; color: #fff; line-height: 1.6;">Cảm ơn bạn đã tin tưởng Ghet.review! Đây là kho báu mà tụi mình thà giữ kín còn hơn bị "over-rated" — giờ nó là của bạn.</p>
+                    
+                    <a href="${mapList.mapUrl}" 
+                       style="display: block; text-align: center; background: #fff; color: #000; padding: 16px; text-decoration: none; border-radius: 12px; font-weight: 800; font-size: 16px; transition: all 0.2s;">
+                      MỞ GOOGLE MAPS NGAY 🗺️
+                    </a>
+                  </div>
+
+                  <div style="text-align: center; color: #555; font-size: 12px;">
+                    <p style="margin-bottom: 4px;">Mã đơn hàng: ${order.order_code}</p>
+                    <p>© ${new Date().getFullYear()} Ghet.review — Nền tảng "dị ứng" Seeding</p>
+                  </div>
                 </div>
               `,
             });
-            console.log('Resend email result:', JSON.stringify(emailResult));
+            console.log('Email sent successfully via SMTP:', info.messageId);
           } else {
             console.warn('mapList not found or missing mapUrl for slug:', order.map_slug);
           }
         } catch (emailErr) {
-          console.error('Failed to send email:', emailErr);
+          console.error('Failed to send email via SMTP:', emailErr);
         }
       }
 
