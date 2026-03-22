@@ -52,31 +52,31 @@ export default async function HiddenGemsPage() {
           </p>
         </div>
         
-        <div className="inline-flex flex-col md:flex-row items-stretch md:items-center justify-center gap-4 p-2 bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl max-w-fit mx-auto">
-          <div className="flex items-center gap-3 px-6 py-4 rounded-2xl bg-white/5 border border-white/5">
+        <div className="inline-flex flex-col md:flex-row items-stretch justify-center gap-4 p-2 bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl max-w-5xl mx-auto w-full md:w-auto">
+          <div className="flex-1 flex items-center gap-3 px-6 py-4 rounded-2xl bg-white/5 border border-white/5">
             <div className="flex-shrink-0 bg-pink-500/20 p-2 rounded-xl text-pink-400">
               <MapPin size={22} />
             </div>
             <span className="text-sm md:text-base text-white font-semibold text-left">
-              Bấm lưu nếu bạn cũng sợ seeding như <br className="hidden lg:block" /> sợ người yêu cũ.
+              Bấm lưu nếu bạn cũng sợ seeding như sợ người yêu cũ.
             </span>
           </div>
-          
-          <div className="flex items-center gap-3 px-6 py-4 rounded-2xl bg-white/5 border border-white/5">
+
+          <div className="flex-1 flex items-center gap-3 px-6 py-4 rounded-2xl bg-white/5 border border-white/5">
             <div className="flex-shrink-0 bg-orange-500/20 p-2 rounded-xl text-orange-400">
               <LockKeyhole size={22} />
             </div>
             <span className="text-sm md:text-base text-white font-semibold text-left">
-              Nội dung "nội bộ": Những góc khuất mà tụi mình <br className="hidden lg:block" /> thà giữ kín còn hơn bị "over-rated"
+              Nội dung "nội bộ": Những góc khuất mà tụi mình thà giữ kín còn hơn bị "over-rated"
             </span>
           </div>
         </div>
-      </div>
+            </div>
 
-      {/* Grid of Map Lists */}
-      <div className="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 px-2 md:px-0">
-        {maps.map((map) => (
-          <Link href={`/hidden-gems/${map.slug.current}`} key={map.slug.current}>
+            {/* Grid of Map Lists */}
+            <div className="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 px-2 md:px-0">
+            {maps.map((map) => (
+            <Link href={`/hidden-gems/${map.slug.current}`} key={map.slug.current}>
             <div className="group relative rounded-[2rem] bg-neutral-900/50 backdrop-blur-sm overflow-hidden border border-white/5 hover:border-pink-500/30 transition-all duration-500 hover:shadow-[0_0_30px_-10px_rgba(236,72,153,0.3)]">
               <div className="aspect-[16/10] relative w-full overflow-hidden">
                 <Image
@@ -87,18 +87,12 @@ export default async function HiddenGemsPage() {
                   sizes="(max-width: 768px) 100vw, 50vw"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-neutral-900 via-neutral-900/20 to-transparent opacity-80" />
-                
+
                 {/* Price tag with Premium Style */}
                 <div className="absolute top-6 left-6 bg-black/60 backdrop-blur-xl border border-white/20 px-4 py-2 rounded-2xl text-base font-black shadow-2xl text-pink-400">
                   {map.price.toLocaleString('vi-VN')}đ
                 </div>
-
-                {/* Status Badge */}
-                <div className="absolute top-6 right-6 bg-pink-500 text-white text-[10px] font-bold uppercase tracking-widest px-3 py-1.5 rounded-full shadow-lg">
-                  Limited Access
-                </div>
-              </div>
-              
+              </div>              
               <div className="p-8 relative">
                 <div className="flex items-center gap-2 mb-3">
                    <div className="h-px w-8 bg-pink-500/50" />
